@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class VehicleParameter
+public partial class VehicleParam
 {
     public string VehicleModel { get; set; } = null!;
 
-    public string GearType { get; set; } = null!;
+    public string Transmission { get; set; } = null!;
 
-    public DateTime WarrantyPeriod { get; set; }
+    public DateTime ServiceTerm { get; set; }
 
     public string Manufacturer { get; set; } = null!;
 

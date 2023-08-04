@@ -1,38 +1,38 @@
--- É¾³ý±í C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS
-DROP TABLE C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.SWITCH_REQUEST_EMPLOYEE
+DROP TABLE C##CAR.SWITCH_REQUEST_EMPLOYEE CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.COMPLETION_OF_MAINTENANCE
-DROP TABLE C##CAR.COMPLETION_OF_MAINTENANCE CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.MAINTENANCE_ITEM_EMPLOYEE
+DROP TABLE C##CAR.MAINTENANCE_ITEM_EMPLOYEE CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.MAINTENANCE_ITEMS
-DROP TABLE C##CAR.MAINTENANCE_ITEMS CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.MAINTENANCE_ITEM
+DROP TABLE C##CAR.MAINTENANCE_ITEM CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.STAFF_IN_BATTERY_REPLACING_SITES
-DROP TABLE C##CAR.STAFF_IN_BATTERY_REPLACING_SITES CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.EMPLOYEE_SWITCH_STATION
+DROP TABLE C##CAR.EMPLOYEE_SWITCH_STATION CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.VEHICLES
-DROP TABLE C##CAR.VEHICLES CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.VEHICLE
+DROP TABLE C##CAR.VEHICLE CASCADE CONSTRAINTS;
 
 -- É¾³ý±í C##CAR.SWITCH_REQUESTS
 DROP TABLE C##CAR.SWITCH_REQUESTS CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.PERFORMANCES
-DROP TABLE C##CAR.PERFORMANCES CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.KPI
+DROP TABLE C##CAR.KPI CASCADE CONSTRAINTS;
 
 -- É¾³ý±í C##CAR.SWITCH_LOG
 DROP TABLE C##CAR.SWITCH_LOG CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.BATTERY_BATTERY_REPLACING_SITES
-DROP TABLE C##CAR.BATTERY_BATTERY_REPLACING_SITES CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.BATTERY_SWITCH_STATION
+DROP TABLE C##CAR.BATTERY_SWITCH_STATION CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.ANNOUNCEMENT
-DROP TABLE C##CAR.ANNOUNCEMENT CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.NEWS
+DROP TABLE C##CAR.NEWS CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.STAFF
-DROP TABLE C##CAR.STAFF CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.EMPLOYEE
+DROP TABLE C##CAR.EMPLOYEE CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.OWNERS
-DROP TABLE C##CAR.OWNERS CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.VEHICLE_OWNER
+DROP TABLE C##CAR.VEHICLE_OWNER CASCADE CONSTRAINTS;
 
 -- É¾³ý±í C##CAR.VEHICLE_PARAM
 DROP TABLE C##CAR.VEHICLE_PARAM CASCADE CONSTRAINTS;
@@ -40,31 +40,31 @@ DROP TABLE C##CAR.VEHICLE_PARAM CASCADE CONSTRAINTS;
 -- É¾³ý±í C##CAR.BATTERY
 DROP TABLE C##CAR.BATTERY CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.BATTERY_MODEL
-DROP TABLE C##CAR.BATTERY_MODEL CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.BATTERY_TYPE
+DROP TABLE C##CAR.BATTERY_TYPE CASCADE CONSTRAINTS;
 
--- É¾³ý±í C##CAR.BATTERY_REPLACING_SITES
-DROP TABLE C##CAR.BATTERY_REPLACING_SITES CASCADE CONSTRAINTS;
+-- É¾³ý±í C##CAR.SWITCH_STATION
+DROP TABLE C##CAR.SWITCH_STATION CASCADE CONSTRAINTS;
 
 -- É¾³ýËùÓÐ´¥·¢Æ÷
-DROP TRIGGER C##CAR.trg_cascade_update_battery;
-DROP TRIGGER C##CAR.trg_bat_bat_replacing_sites_battery;
-DROP TRIGGER C##CAR.trg_bat_bat_replacing_sites_site;
-DROP TRIGGER C##CAR.trg_performances_staff;
-DROP TRIGGER C##CAR.trg_vehicles_owner;
-DROP TRIGGER C##CAR.trg_vehicles_vehicle_param;
-DROP TRIGGER C##CAR.trg_vehicles_battery;
-DROP TRIGGER C##CAR.trg_maintenance_items_vehicle;
-DROP TRIGGER C##CAR.trg_staff_in_battery_replacing_sites_employee;
-DROP TRIGGER C##CAR.trg_staff_in_battery_replacing_sites_site;
-DROP TRIGGER C##CAR.trg_completion_of_maintenance_staff;
-DROP TRIGGER C##CAR.trg_completion_of_maintenance_maintenance_item;
-DROP TRIGGER C##CAR.trg_acceptance_of_switch_requests_employee;
-DROP TRIGGER C##CAR.trg_switch_requests_vehicles;
-DROP TRIGGER C##CAR.trg_switch_requests_acceptance;
-DROP TRIGGER C##CAR.trg_switch_log_vehicles;
-DROP TRIGGER C##CAR.trg_switch_log_staff;
-DROP TRIGGER C##CAR.trg_switch_log_battery_in;
-DROP TRIGGER C##CAR.trg_switch_log_battery_out;
-DROP TRIGGER C##CAR.trg_switch_log_switch_requests_lon;
-DROP TRIGGER C##CAR.trg_switch_log_switch_requests_lat;
+DROP TRIGGER c##car.trg_cascade_update_battery;
+DROP TRIGGER c##car.trg_bat_bat_replacing_sites_battery;
+DROP TRIGGER c##car.trg_bat_bat_replacing_sites_site;
+DROP TRIGGER c##car.trg_kpi_employee;
+DROP TRIGGER c##car.trg_vehicle_owner;
+DROP TRIGGER c##car.trg_vehicle_vehicle_param;
+DROP TRIGGER c##car.trg_vehicle_battery;
+DROP TRIGGER c##car.trg_maintenance_item_vehicle;
+DROP TRIGGER c##car.trg_employee_SWITCH_station_employee;
+DROP TRIGGER c##car.trg_employee_SWITCH_station_site;
+DROP TRIGGER c##car.trg_maintenance_item_employee_employee;
+DROP TRIGGER c##car.trg_maintenance_item_employee_maintenance_item;
+DROP TRIGGER c##car.trg_switch_request_employee_employee;
+DROP TRIGGER c##car.trg_switch_request_vehicle;
+DROP TRIGGER c##car.trg_switch_request_acceptance;
+DROP TRIGGER c##car.trg_switch_log_vehicle;
+DROP TRIGGER c##car.trg_switch_log_employee;
+DROP TRIGGER c##car.trg_switch_log_battery_in;
+DROP TRIGGER c##car.trg_switch_log_battery_out;
+DROP TRIGGER c##car.trg_switch_log_switch_request_lon;
+DROP TRIGGER c##car.trg_switch_log_switch_request_lat;

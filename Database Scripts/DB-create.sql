@@ -1,409 +1,410 @@
-CREATE TABLE C##CAR.BATTERY_REPLACING_SITES (
-    SITE_ID VARCHAR2(50) DEFAULT 'st0' PRIMARY KEY,
-    STATION_NAME VARCHAR2(50),
-    LINEUP INT DEFAULT 0 NOT NULL,
-    TARIFF NUMBER DEFAULT 0 NOT NULL,
-    COMMISSION NUMBER DEFAULT 0 NOT NULL,
-    LONGTITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    LATITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    FALIURE_STATUS CHAR(1) DEFAULT 'n' CHECK (FALIURE_STATUS IN ('y', 'n')),
-    BATTERY_CAPACITY INT DEFAULT 0 NOT NULL,
-    AVAILABLE_BATTERY_COUNT INT DEFAULT 0
+create table c##car.switch_station (
+    station_id varchar2(50) default 'st0' primary key,
+    station_name varchar2(50),
+    queue_length int default 0 not null,
+    service_fee number default 0 not null,
+    electricity_fee number default 0 not null,
+    longtitude number default 90.00 not null unique,
+    latitude number default 90.00 not null unique,
+    faliure_status char(1) default 'n' check (faliure_status in ('y', 'n')),
+    battery_capacity int default 0 not null,
+    available_battery_count int default 0
 );
 
-CREATE TABLE C##CAR.BATTERY_MODEL (
-    BATTERY_MODEL_ID VARCHAR2(50) DEFAULT 'tp0.00.0' PRIMARY KEY,
-    MAX_CHARGE_TIEMS INT DEFAULT 1000 NOT NULL,
-    TOTAL_CAPACITY VARCHAR2(50) DEFAULT '98.67kWh' NOT NULL
+create table c##car.battery_type (
+    battery_type_id varchar2(50) default 'tp0.00.0' primary key,
+    max_charge_tiems int default 1000 not null,
+    total_capacity varchar2(50) default '98.67kwh' not null
 );
 
-CREATE TABLE C##CAR.BATTERY (
-    BATTERY_ID VARCHAR2(50) DEFAULT 'bt_tl1_num0.0.0' PRIMARY KEY,
-    AVAILABLE_STATUS CHAR(1) DEFAULT 'y' CHECK (AVAILABLE_STATUS IN ('y', 'n')),
-    CURRENT_CAPACITY VARCHAR2(4) DEFAULT '0' NOT NULL,
-    CURR_CHARGE_TIMES INT DEFAULT 0 NOT NULL,
-    MANUFACTURING_DATE TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    BATTERY_MODEL_ID VARCHAR2(50) DEFAULT 'tp0.00.0' NOT NULL,
-    CONSTRAINT FK_BATTERY_MODEL FOREIGN KEY (BATTERY_MODEL_ID)
-        REFERENCES C##CAR.BATTERY_MODEL (BATTERY_MODEL_ID) ON DELETE CASCADE
+create table c##car.battery (
+    battery_id varchar2(50) default 'bt_tl1_num0.0.0' primary key,
+    available_status char(1) default 'y' check (available_status in ('y', 'n')),
+    current_capacity varchar2(4) default '0' not null,
+    curr_charge_times int default 0 not null,
+    manufacturing_date timestamp default systimestamp not null,
+    battery_type_id varchar2(50) default 'tp0.00.0' not null,
+    constraint fk_battery_type foreign key (battery_type_id)
+        references c##car.battery_type (battery_type_id) on delete cascade
 );
 
-CREATE TABLE C##CAR.VEHICLE_PARAM (
-    VEHICLE_MODEL VARCHAR2(50) DEFAULT 'fu_wl_lp1_num0.0.0' PRIMARY KEY,
-    GEAR_TYPE VARCHAR2(50) DEFAULT 'gt0.00' NOT NULL,
-    WARRANTY_PERIOD TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    MANUFACTURER VARCHAR2(50) DEFAULT 'NIO Inc.' NOT NULL,
-    MAX_SPEED NUMBER
+create table c##car.vehicle_param (
+    vehicle_model varchar2(50) default 'fu_wl_lp1_num0.0.0' primary key,
+    transmission varchar2(50) default 'gt0.00' not null,
+    service_term timestamp default systimestamp not null,
+    manufacturer varchar2(50) default 'nio inc.' not null,
+    max_speed number
 );
 
-CREATE TABLE C##CAR.OWNERS (
-    OWNER_ID VARCHAR2(50) DEFAULT 'No. 0' PRIMARY KEY,
-    USERNAME VARCHAR2(50) DEFAULT 'user_0.00' NOT NULL,
-    PASSWORD_P VARCHAR2(50) DEFAULT '123456' NOT NULL,
-    AVATAR BLOB,
-    CREATION_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    PHONE_NUMBER VARCHAR2(50) DEFAULT '+86',
-    EMAIL VARCHAR2(50) DEFAULT 'wl@car.com' NOT NULL,
-    GENDER CHAR(1) DEFAULT 'm' CHECK (GENDER IN ('f', 'm')),
-    BIRTHDAY TIMESTAMP,
-    ADDRESS VARCHAR2(255)
+create table c##car.vehicle_owner (
+    owner_id varchar2(50) default 'no. 0' primary key,
+    username varchar2(50) default '����' not null,
+    nickname varchar2(50) default 'user_0.00' not null,
+    password varchar2(50) default '123456' not null,
+    profile_photo blob,
+    create_time timestamp default systimestamp not null,
+    phone_number varchar2(50) default '+86',
+    email varchar2(50) default 'wl@car.com' not null,
+    gender char(1) default 'm' check (gender in ('f', 'm')),
+    birthday timestamp,
+    address varchar2(255)
 );
 
-CREATE TABLE C##CAR.STAFF (
-    EMPLOYEE_ID VARCHAR2(50) DEFAULT 'No. 0' PRIMARY KEY,
-    USERNAME VARCHAR2(50) DEFAULT 'ep_0.00' NOT NULL,
-    PASSWORD_P VARCHAR2(50) DEFAULT '123456' NOT NULL,
-    AVATAR BLOB,
-    CREATI_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    PHONE_NUMBER VARCHAR2(50) DEFAULT '+86',
-    IDENTITY_NUMBER VARCHAR2(50) DEFAULT '1xxxxxxxxxxxxxxxxx' NOT NULL,
-    NAME_P VARCHAR2(50) DEFAULT '����' NOT NULL,
-    GENDER CHAR(1) DEFAULT 'm' CHECK (GENDER IN ('f', 'm')),
-    POSITIONS VARCHAR2(50) DEFAULT '-',
-    SALARY NUMBER
+create table c##car.employee (
+    employee_id varchar2(50) default 'no. 0' primary key,
+    username varchar2(50) default 'ep_0.00' not null,
+    password varchar2(50) default '123456' not null,
+    profile_photo blob,
+    create_time timestamp default systimestamp not null,
+    phone_number varchar2(50) default '+86',
+    identity_number varchar2(50) default '1xxxxxxxxxxxxxxxxx' not null,
+    name varchar2(50) default '����' not null,
+    gender char(1) default 'm' check (gender in ('f', 'm')),
+    positions varchar2(50) default '_',
+    salary number
 );
 
-CREATE TABLE C##CAR.ANNOUNCEMENT (
-    ANNOUNCEMENT_ID VARCHAR2(50) DEFAULT 'News. 0' PRIMARY KEY,
-    PUBLISH_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    PUBLISH_POS VARCHAR2(50),
-    TITLE VARCHAR2(50) DEFAULT 'Money Talks.' NOT NULL,
-    CONTENTS VARCHAR2(255),
-    LIKES INT DEFAULT 0,
-    VIEW_COUNT INT DEFAULT 0
+create table c##car.news (
+    announcement_id varchar2(50) default 'news. 0' primary key,
+    publish_time timestamp default systimestamp not null,
+    publish_pos varchar2(50),
+    title varchar2(50) default 'money talks.' not null,
+    contents varchar2(255),
+    likes int default 0,
+    view_count int default 0
 );
 
-CREATE TABLE C##CAR.BATTERY_BATTERY_REPLACING_SITES (
-    BATTERY_ID VARCHAR2(50) DEFAULT 'bt_tl1_num0.0.0' PRIMARY KEY,
-    SITE_ID VARCHAR2(50) DEFAULT 'st0' NOT NULL,
-    CONSTRAINT FK_BATTERY_BATTERY_BATTERY_REPLACING_SITES FOREIGN KEY (BATTERY_ID)
-        REFERENCES C##CAR.BATTERY (BATTERY_ID) ON DELETE CASCADE,
-    CONSTRAINT FK_BATTERY_BATTERY_REPLACING_SITES_BATTERY_REPLACING_SITES FOREIGN KEY (SITE_ID)
-        REFERENCES C##CAR.BATTERY_REPLACING_SITES (SITE_ID) ON DELETE CASCADE 
+create table c##car.battery_switch_station (
+    battery_id varchar2(50) default 'bt_tl1_num0.0.0' primary key,
+    station_id varchar2(50) default 'st0' not null,
+    constraint fk_battery_battery_switch_station foreign key (battery_id)
+        references c##car.battery (battery_id) on delete cascade,
+    constraint fk_battery_switch_station_switch_station foreign key (station_id)
+        references c##car.switch_station (station_id) on delete cascade 
 );
 
-CREATE TABLE C##CAR.PERFORMANCES (
-    PERFORMANCE_ID VARCHAR2(50) DEFAULT 'Pf. No. 0--0' PRIMARY KEY,
-    EMPLOYEE_ID VARCHAR2(50)  DEFAULT 'No. 0' NOT NULL,
-    TOTAL_PERFORMANCE INT DEFAULT 0 NOT NULL,
-    SERVICE_COUNT INT DEFAULT 0,
-    POSITIVE_RATING INT,
-    CONSTRAINT FK_PERFORMANCES_STAFF FOREIGN KEY (EMPLOYEE_ID)
-        REFERENCES C##CAR.STAFF (EMPLOYEE_ID) ON DELETE CASCADE 
+create table c##car.kpi (
+    kpi_id varchar2(50) default 'pf. no. 0__0' primary key,
+    employee_id varchar2(50)  default 'no. 0' not null,
+    total_performance int default 0 not null,
+    service_frequency int default 0,
+    score int,
+    constraint fk_kpi_employee foreign key (employee_id)
+        references c##car.employee (employee_id) on delete cascade 
 );
-CREATE TABLE C##CAR.VEHICLES (
-    VEHICLE_ID VARCHAR2(50) DEFAULT 'VC. LC.0' PRIMARY KEY,
-    VEHICLE_MODEL VARCHAR2(50) DEFAULT 'fu_wl_lp1_num0.0.0' NOT NULL,
-    OWNER_ID VARCHAR2(50) DEFAULT 'No. 0' NOT NULL,
-    PURCHASE_DATE TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    BATTERY_ID VARCHAR2(50) DEFAULT NULL,
-    CONSTRAINT FK_VEHICLES_OWNER FOREIGN KEY (OWNER_ID)
-        REFERENCES C##CAR.OWNERS (OWNER_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_VEHICLES_VEHICLE_PARAM FOREIGN KEY (VEHICLE_MODEL)
-        REFERENCES C##CAR.VEHICLE_PARAM (VEHICLE_MODEL) ON DELETE CASCADE ,
-    CONSTRAINT FK_VEHICLES_BATTERY FOREIGN KEY (BATTERY_ID)
-        REFERENCES C##CAR.BATTERY (BATTERY_ID) ON DELETE CASCADE 
+create table c##car.vehicle (
+    vehicle_id varchar2(50) default 'vc. lc.0' primary key,
+    vehicle_model varchar2(50) default 'fu_wl_lp1_num0.0.0' not null,
+    owner_id varchar2(50) default 'no. 0' not null,
+    purchase_date timestamp default systimestamp not null,
+    battery_id varchar2(50) default null,
+    constraint fk_vehicle_owner foreign key (owner_id)
+        references c##car.vehicle_owner (owner_id) on delete cascade ,
+    constraint fk_vehicle_vehicle_param foreign key (vehicle_model)
+        references c##car.vehicle_param (vehicle_model) on delete cascade ,
+    constraint fk_vehicle_battery foreign key (battery_id)
+        references c##car.battery (battery_id) on delete cascade 
 );
-CREATE TABLE C##CAR.MAINTENANCE_ITEMS (
-    MAINTENANCE_ITEM_ID VARCHAR2(50) DEFAULT 'MTI_ep_0x548151' PRIMARY KEY,
-    VEHICLE_ID VARCHAR2(50) DEFAULT 'VC. LC.0' NOT NULL,
-    MAINTENANCE_LOCATION VARCHAR2(50) UNIQUE,
-    REMARKS VARCHAR2(255),
-    SERVICE_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    ORDER_SUBMISSION_TIME TIMESTAMP,
-    ORDER_STATUS CHAR(1) DEFAULT '0',
-    EVALUATIONS VARCHAR2(255),
-    CONSTRAINT FK_MAINTENANCE_ITEMS_VEHICLE FOREIGN KEY (VEHICLE_ID)
-        REFERENCES C##CAR.VEHICLES (VEHICLE_ID) ON DELETE CASCADE 
-);
-
-CREATE TABLE C##CAR.STAFF_IN_BATTERY_REPLACING_SITES (
-    EMPLOYEE_ID VARCHAR2(50) DEFAULT 'No. 0' PRIMARY KEY,
-    SITE_ID VARCHAR2(50) DEFAULT 'st0' NOT NULL,
-    CONSTRAINT FK_STAFF_IN_BATTERY_REPLACING_SITES_EMPLOYEE FOREIGN KEY (EMPLOYEE_ID)
-        REFERENCES C##CAR.STAFF (EMPLOYEE_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_STAFF_IN_BATTERY_REPLACING_SITES_BATTERY_REPLACING_SITES FOREIGN KEY (SITE_ID)
-        REFERENCES C##CAR.BATTERY_REPLACING_SITES (SITE_ID) ON DELETE CASCADE 
-);
-CREATE TABLE C##CAR.COMPLETION_OF_MAINTENANCE (
-    MAINTENANCE_ITEM_ID VARCHAR2(50) DEFAULT 'MTI_ep_0x548151' PRIMARY KEY,
-    EMPLOYEE_ID VARCHAR2(50) DEFAULT 'No. 0' NOT NULL,
-    CONSTRAINT FK_COMPLETION_OF_MAINTENANCE_STAFF FOREIGN KEY (EMPLOYEE_ID)
-        REFERENCES C##CAR.STAFF (EMPLOYEE_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_COMPLETION_OF_MAINTENANCE_MAINTENANCE_ITEMS FOREIGN KEY (MAINTENANCE_ITEM_ID)
-        REFERENCES C##CAR.MAINTENANCE_ITEMS (MAINTENANCE_ITEM_ID) ON DELETE CASCADE 
-);
-CREATE TABLE C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS (
-    SWITCH_REQUEST_ID VARCHAR2(50) DEFAULT 'SR_0x_1207xw1' PRIMARY KEY,
-    EMPLOYEE_ID VARCHAR2(50) DEFAULT 'No. 0' NOT NULL,
-    CONSTRAINT FK_ACCEPTANCE_OF_SWITCH_REQUESTS_EMPLOYEE FOREIGN KEY (EMPLOYEE_ID)
-        REFERENCES C##CAR.STAFF (EMPLOYEE_ID) ON DELETE CASCADE 
+create table c##car.maintenance_item (
+    maintenance_item_id varchar2(50) default 'mti_ep_0x548151' primary key,
+    vehicle_id varchar2(50) default 'vc. lc.0' not null,
+    maintenance_location varchar2(50) unique,
+    remarks varchar2(255),
+    service_time timestamp default systimestamp not null,
+    order_submission_time timestamp,
+    order_status char(1) default '0',
+    evaluations varchar2(255),
+    constraint fk_maintenance_item_vehicle foreign key (vehicle_id)
+        references c##car.vehicle (vehicle_id) on delete cascade 
 );
 
-CREATE TABLE C##CAR.SWITCH_REQUESTS (
-    SWITCH_REQUEST_ID VARCHAR2(50) DEFAULT 'SR_0x_1207xw1' PRIMARY KEY,
-    VEHICLE_ID VARCHAR2(50) DEFAULT 'VC. LC.0' NOT NULL,
-    SWITCH_MODE CHAR(1) DEFAULT 'L' CHECK (SWITCH_MODE IN ('D', 'L')),
-    REQUEST_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    LONGTITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    LATITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    POSITION VARCHAR2(50),
-    REMARKS VARCHAR2(255),
-    CONSTRAINT FK_SWITCH_REQUESTS_VEHICLES FOREIGN KEY (VEHICLE_ID)
-        REFERENCES C##CAR.VEHICLES (VEHICLE_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_REQUESTS_ACCEPTANCE_OF_SWITCH_REQUESTS FOREIGN KEY (SWITCH_REQUEST_ID)
-        REFERENCES C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS (SWITCH_REQUEST_ID) ON DELETE CASCADE 
+create table c##car.employee_switch_station (
+    employee_id varchar2(50) default 'no. 0' primary key,
+    station_id varchar2(50) default 'st0' not null,
+    constraint fk_employee_switch_station_employee foreign key (employee_id)
+        references c##car.employee (employee_id) on delete cascade ,
+    constraint fk_employee_switch_station_switch_station foreign key (station_id)
+        references c##car.switch_station (station_id) on delete cascade 
 );
-CREATE TABLE C##CAR.SWITCH_LOG (
-    SWITCH_SERVICE_ID VARCHAR2(50) DEFAULT 'SW_0x_017' PRIMARY KEY,
-    VEHICLE_ID VARCHAR2(50) DEFAULT 'VC. LC.0' NOT NULL,
-    SWITCH_TIME TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
-    EMPLOYEE_ID VARCHAR2(50) DEFAULT 'No. 0' NOT NULL,
-    SWAPPED_BATTERY_ID VARCHAR2(50) DEFAULT 'bt_tl1_num0.0.1' NOT NULL,
-    SWAPPED_OUT_BATTERY_ID VARCHAR2(50) DEFAULT 'bt_tl1_num0.0.0' NOT NULL,
-    EVALUATIONS VARCHAR2(255),
-    LONGTITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    LATITUDE NUMBER DEFAULT 90.00 NOT NULL UNIQUE,
-    POSITION VARCHAR2(50),
-    CONSTRAINT FK_SWITCH_LOG_VEHICLES FOREIGN KEY (VEHICLE_ID)
-        REFERENCES C##CAR.VEHICLES (VEHICLE_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_LOG_STAFF FOREIGN KEY (EMPLOYEE_ID)
-        REFERENCES C##CAR.STAFF (EMPLOYEE_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_LOG_BATTERY_IN FOREIGN KEY (SWAPPED_BATTERY_ID)
-        REFERENCES C##CAR.BATTERY (BATTERY_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_LOG_BATTERY_OUT FOREIGN KEY (SWAPPED_OUT_BATTERY_ID)
-        REFERENCES C##CAR.BATTERY (BATTERY_ID) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_LOG_SWITCH_REQUESTS_LON FOREIGN KEY (LONGTITUDE)
-        REFERENCES C##CAR.SWITCH_REQUESTS (LONGTITUDE) ON DELETE CASCADE ,
-    CONSTRAINT FK_SWITCH_LOG_SWITCH_REQUESTS_LAT FOREIGN KEY (LATITUDE)
-        REFERENCES C##CAR.SWITCH_REQUESTS (LATITUDE) ON DELETE CASCADE
+create table c##car.maintenance_item_employee (
+    maintenance_item_id varchar2(50) default 'mti_ep_0x548151' primary key,
+    employee_id varchar2(50) default 'no. 0' not null,
+    constraint fk_maintenance_item_employee_employee foreign key (employee_id)
+        references c##car.employee (employee_id) on delete cascade ,
+    constraint fk_maintenance_item_employee_maintenance_item foreign key (maintenance_item_id)
+        references c##car.maintenance_item (maintenance_item_id) on delete cascade 
 );
-CREATE TRIGGER C##CAR.trg_cascade_update_battery
-AFTER UPDATE OF BATTERY_MODEL_ID ON C##CAR.BATTERY_MODEL
-FOR EACH ROW
-BEGIN
-    UPDATE C##CAR.BATTERY
-    SET BATTERY_MODEL_ID = :NEW.BATTERY_MODEL_ID
-    WHERE BATTERY_MODEL_ID = :OLD.BATTERY_MODEL_ID;
-END;
+create table c##car.switch_request_employee (
+    switch_request_id varchar2(50) default 'sr_0x_1207xw1' primary key,
+    employee_id varchar2(50) default 'no. 0' not null,
+    constraint fk_switch_request_employee_employee foreign key (employee_id)
+        references c##car.employee (employee_id) on delete cascade 
+);
+
+create table c##car.switch_request (
+    switch_request_id varchar2(50) default 'sr_0x_1207xw1' primary key,
+    vehicle_id varchar2(50) default 'vc. lc.0' not null,
+    switch_type char(1) default 'l' check (switch_type in ('d', 'l')),
+    request_time timestamp default systimestamp not null,
+    longtitude number default 90.00 not null unique,
+    latitude number default 90.00 not null unique,
+    position varchar2(50),
+    remarks varchar2(255),
+    constraint fk_switch_request_vehicle foreign key (vehicle_id)
+        references c##car.vehicle (vehicle_id) on delete cascade ,
+    constraint fk_switch_request_switch_request_employee foreign key (switch_request_id)
+        references c##car.switch_request_employee (switch_request_id) on delete cascade 
+);
+create table c##car.switch_log (
+    switch_service_id varchar2(50) default 'sw_0x_017' primary key,
+    vehicle_id varchar2(50) default 'vc. lc.0' not null,
+    switch_time timestamp default systimestamp not null,
+    employee_id varchar2(50) default 'no. 0' not null,
+    battery_id_on varchar2(50) default 'bt_tl1_num0.0.1' not null,
+    battery_id_off varchar2(50) default 'bt_tl1_num0.0.0' not null,
+    evaluations varchar2(255),
+    longtitude number default 90.00 not null unique,
+    latitude number default 90.00 not null unique,
+    position varchar2(50),
+    constraint fk_switch_log_vehicle foreign key (vehicle_id)
+        references c##car.vehicle (vehicle_id) on delete cascade ,
+    constraint fk_switch_log_employee foreign key (employee_id)
+        references c##car.employee (employee_id) on delete cascade ,
+    constraint fk_switch_log_battery_in foreign key (battery_id_on)
+        references c##car.battery (battery_id) on delete cascade ,
+    constraint fk_switch_log_battery_out foreign key (battery_id_off)
+        references c##car.battery (battery_id) on delete cascade ,
+    constraint fk_switch_log_switch_request_lon foreign key (longtitude)
+        references c##car.switch_request (longtitude) on delete cascade ,
+    constraint fk_switch_log_switch_request_lat foreign key (latitude)
+        references c##car.switch_request (latitude) on delete cascade
+);
+create trigger c##car.trg_cascade_update_battery
+after update of battery_type_id on c##car.battery_type
+for each row
+begin
+    update c##car.battery
+    set battery_type_id = :new.battery_type_id
+    where battery_type_id = :old.battery_type_id;
+end;
 /
-CREATE TRIGGER C##CAR.trg_bat_bat_replacing_sites_battery
-AFTER UPDATE OF BATTERY_ID ON C##CAR.BATTERY
-FOR EACH ROW
-BEGIN
-    IF UPDATING('BATTERY_ID') THEN
-        UPDATE C##CAR.BATTERY_BATTERY_REPLACING_SITES
-        SET BATTERY_ID = :NEW.BATTERY_ID
-        WHERE BATTERY_ID = :OLD.BATTERY_ID;
-    END IF;
-END;
+create trigger c##car.trg_bat_bat_replacing_sites_battery
+after update of battery_id on c##car.battery
+for each row
+begin
+    if updating('battery_id') then
+        update c##car.battery_switch_station
+        set battery_id = :new.battery_id
+        where battery_id = :old.battery_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_bat_bat_replacing_sites_site
-AFTER UPDATE OF SITE_ID ON C##CAR.BATTERY_REPLACING_SITES
-FOR EACH ROW
-BEGIN
-    IF UPDATING('SITE_ID') THEN
-        UPDATE C##CAR.BATTERY_BATTERY_REPLACING_SITES
-        SET SITE_ID = :NEW.SITE_ID
-        WHERE SITE_ID = :OLD.SITE_ID;
-    END IF;
-END;
+create trigger c##car.trg_bat_bat_replacing_sites_site
+after update of station_id on c##car.switch_station
+for each row
+begin
+    if updating('station_id') then
+        update c##car.battery_switch_station
+        set station_id = :new.station_id
+        where station_id = :old.station_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_performances_staff
-AFTER UPDATE OF EMPLOYEE_ID ON C##CAR.STAFF
-FOR EACH ROW
-BEGIN
-    IF UPDATING('EMPLOYEE_ID') THEN
-        UPDATE C##CAR.PERFORMANCES
-        SET EMPLOYEE_ID = :NEW.EMPLOYEE_ID
-        WHERE EMPLOYEE_ID = :OLD.EMPLOYEE_ID;
-    END IF;
-END;
+create trigger c##car.trg_kpi_employee
+after update of employee_id on c##car.employee
+for each row
+begin
+    if updating('employee_id') then
+        update c##car.kpi
+        set employee_id = :new.employee_id
+        where employee_id = :old.employee_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_vehicles_owner
-AFTER UPDATE OF OWNER_ID ON C##CAR.OWNERS
-FOR EACH ROW
-BEGIN
-    IF UPDATING('OWNER_ID') THEN
-        UPDATE C##CAR.VEHICLES
-        SET OWNER_ID = :NEW.OWNER_ID
-        WHERE OWNER_ID = :OLD.OWNER_ID;
-    END IF;
-END;
+create trigger c##car.trg_vehicle_owner
+after update of owner_id on c##car.vehicle_owner
+for each row
+begin
+    if updating('owner_id') then
+        update c##car.vehicle
+        set owner_id = :new.owner_id
+        where owner_id = :old.owner_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_vehicles_vehicle_param
-AFTER UPDATE OF VEHICLE_MODEL ON C##CAR.VEHICLE_PARAM
-FOR EACH ROW
-BEGIN
-    IF UPDATING('VEHICLE_MODEL') THEN
-        UPDATE C##CAR.VEHICLES
-        SET VEHICLE_MODEL = :NEW.VEHICLE_MODEL
-        WHERE VEHICLE_MODEL = :OLD.VEHICLE_MODEL;
-    END IF;
-END;
+create trigger c##car.trg_vehicle_vehicle_param
+after update of vehicle_model on c##car.vehicle_param
+for each row
+begin
+    if updating('vehicle_model') then
+        update c##car.vehicle
+        set vehicle_model = :new.vehicle_model
+        where vehicle_model = :old.vehicle_model;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_vehicles_battery
-AFTER UPDATE OF BATTERY_ID ON C##CAR.BATTERY
-FOR EACH ROW
-BEGIN
-    IF UPDATING('BATTERY_ID') THEN
-        UPDATE C##CAR.VEHICLES
-        SET BATTERY_ID = :NEW.BATTERY_ID
-        WHERE BATTERY_ID = :OLD.BATTERY_ID;
-    END IF;
-END;
+create trigger c##car.trg_vehicle_battery
+after update of battery_id on c##car.battery
+for each row
+begin
+    if updating('battery_id') then
+        update c##car.vehicle
+        set battery_id = :new.battery_id
+        where battery_id = :old.battery_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_maintenance_items_vehicle
-AFTER UPDATE OF VEHICLE_ID ON C##CAR.VEHICLES
-FOR EACH ROW
-BEGIN
-    IF UPDATING('VEHICLE_ID') THEN
-        UPDATE C##CAR.MAINTENANCE_ITEMS
-        SET VEHICLE_ID = :NEW.VEHICLE_ID
-        WHERE VEHICLE_ID = :OLD.VEHICLE_ID;
-    END IF;
-END;
+create trigger c##car.trg_maintenance_item_vehicle
+after update of vehicle_id on c##car.vehicle
+for each row
+begin
+    if updating('vehicle_id') then
+        update c##car.maintenance_item
+        set vehicle_id = :new.vehicle_id
+        where vehicle_id = :old.vehicle_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_staff_in_battery_replacing_sites_employee
-AFTER UPDATE OF EMPLOYEE_ID ON C##CAR.STAFF
-FOR EACH ROW
-BEGIN
-    IF UPDATING('EMPLOYEE_ID') THEN
-        UPDATE C##CAR.STAFF_IN_BATTERY_REPLACING_SITES
-        SET EMPLOYEE_ID = :NEW.EMPLOYEE_ID
-        WHERE EMPLOYEE_ID = :OLD.EMPLOYEE_ID;
-    END IF;
-END;
+create trigger c##car.trg_employee_switch_station_employee
+after update of employee_id on c##car.employee
+for each row
+begin
+    if updating('employee_id') then
+        update c##car.employee_switch_station
+        set employee_id = :new.employee_id
+        where employee_id = :old.employee_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_staff_in_battery_replacing_sites_site
-AFTER UPDATE OF SITE_ID ON C##CAR.BATTERY_REPLACING_SITES
-FOR EACH ROW
-BEGIN
-    IF UPDATING('SITE_ID') THEN
-        UPDATE C##CAR.STAFF_IN_BATTERY_REPLACING_SITES
-        SET SITE_ID = :NEW.SITE_ID
-        WHERE SITE_ID = :OLD.SITE_ID;
-    END IF;
-END;
+create trigger c##car.trg_employee_switch_station_site
+after update of station_id on c##car.switch_station
+for each row
+begin
+    if updating('station_id') then
+        update c##car.employee_switch_station
+        set station_id = :new.station_id
+        where station_id = :old.station_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_completion_of_maintenance_staff
-AFTER UPDATE OF EMPLOYEE_ID ON C##CAR.STAFF
-FOR EACH ROW
-BEGIN
-    IF UPDATING('EMPLOYEE_ID') THEN
-        UPDATE C##CAR.COMPLETION_OF_MAINTENANCE
-        SET EMPLOYEE_ID = :NEW.EMPLOYEE_ID
-        WHERE EMPLOYEE_ID = :OLD.EMPLOYEE_ID;
-    END IF;
-END;
+create trigger c##car.trg_maintenance_item_employee_employee
+after update of employee_id on c##car.employee
+for each row
+begin
+    if updating('employee_id') then
+        update c##car.maintenance_item_employee
+        set employee_id = :new.employee_id
+        where employee_id = :old.employee_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_completion_of_maintenance_maintenance_item
-AFTER UPDATE OF MAINTENANCE_ITEM_ID ON C##CAR.MAINTENANCE_ITEMS
-FOR EACH ROW
-BEGIN
-    IF UPDATING('MAINTENANCE_ITEM_ID') THEN
-        UPDATE C##CAR.COMPLETION_OF_MAINTENANCE
-        SET MAINTENANCE_ITEM_ID = :NEW.MAINTENANCE_ITEM_ID
-        WHERE MAINTENANCE_ITEM_ID = :OLD.MAINTENANCE_ITEM_ID;
-    END IF;
-END;
+create trigger c##car.trg_maintenance_item_employee_maintenance_item
+after update of maintenance_item_id on c##car.maintenance_item
+for each row
+begin
+    if updating('maintenance_item_id') then
+        update c##car.maintenance_item_employee
+        set maintenance_item_id = :new.maintenance_item_id
+        where maintenance_item_id = :old.maintenance_item_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_acceptance_of_switch_requests_employee
-AFTER UPDATE OF EMPLOYEE_ID ON C##CAR.STAFF
-FOR EACH ROW
-BEGIN
-    IF UPDATING('EMPLOYEE_ID') THEN
-        UPDATE C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS
-        SET EMPLOYEE_ID = :NEW.EMPLOYEE_ID
-        WHERE EMPLOYEE_ID = :OLD.EMPLOYEE_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_request_employee_employee
+after update of employee_id on c##car.employee
+for each row
+begin
+    if updating('employee_id') then
+        update c##car.switch_request_employee
+        set employee_id = :new.employee_id
+        where employee_id = :old.employee_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_requests_vehicles
-AFTER UPDATE OF VEHICLE_ID ON C##CAR.VEHICLES
-FOR EACH ROW
-BEGIN
-    IF UPDATING('VEHICLE_ID') THEN
-        UPDATE C##CAR.SWITCH_REQUESTS
-        SET VEHICLE_ID = :NEW.VEHICLE_ID
-        WHERE VEHICLE_ID = :OLD.VEHICLE_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_request_vehicle
+after update of vehicle_id on c##car.vehicle
+for each row
+begin
+    if updating('vehicle_id') then
+        update c##car.switch_request
+        set vehicle_id = :new.vehicle_id
+        where vehicle_id = :old.vehicle_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_requests_acceptance
-AFTER UPDATE OF SWITCH_REQUEST_ID ON C##CAR.ACCEPTANCE_OF_SWITCH_REQUESTS
-FOR EACH ROW
-BEGIN
-    IF UPDATING('SWITCH_REQUEST_ID') THEN
-        UPDATE C##CAR.SWITCH_REQUESTS
-        SET SWITCH_REQUEST_ID = :NEW.SWITCH_REQUEST_ID
-        WHERE SWITCH_REQUEST_ID = :OLD.SWITCH_REQUEST_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_request_acceptance
+after update of switch_request_id on c##car.switch_request_employee
+for each row
+begin
+    if updating('switch_request_id') then
+        update c##car.switch_request
+        set switch_request_id = :new.switch_request_id
+        where switch_request_id = :old.switch_request_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_vehicles
-AFTER UPDATE OF VEHICLE_ID ON C##CAR.VEHICLES
-FOR EACH ROW
-BEGIN
-    IF UPDATING('VEHICLE_ID') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET VEHICLE_ID = :NEW.VEHICLE_ID
-        WHERE VEHICLE_ID = :OLD.VEHICLE_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_vehicle
+after update of vehicle_id on c##car.vehicle
+for each row
+begin
+    if updating('vehicle_id') then
+        update c##car.switch_log
+        set vehicle_id = :new.vehicle_id
+        where vehicle_id = :old.vehicle_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_staff
-AFTER UPDATE OF EMPLOYEE_ID ON C##CAR.STAFF
-FOR EACH ROW
-BEGIN
-    IF UPDATING('EMPLOYEE_ID') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET EMPLOYEE_ID = :NEW.EMPLOYEE_ID
-        WHERE EMPLOYEE_ID = :OLD.EMPLOYEE_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_employee
+after update of employee_id on c##car.employee
+for each row
+begin
+    if updating('employee_id') then
+        update c##car.switch_log
+        set employee_id = :new.employee_id
+        where employee_id = :old.employee_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_battery_in
-AFTER UPDATE OF BATTERY_ID ON C##CAR.BATTERY
-FOR EACH ROW
-BEGIN
-    IF UPDATING('BATTERY_ID') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET SWAPPED_BATTERY_ID = :NEW.BATTERY_ID
-        WHERE SWAPPED_BATTERY_ID = :OLD.BATTERY_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_battery_in
+after update of battery_id on c##car.battery
+for each row
+begin
+    if updating('battery_id') then
+        update c##car.switch_log
+        set battery_id_on = :new.battery_id
+        where battery_id_on = :old.battery_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_battery_out
-AFTER UPDATE OF BATTERY_ID ON C##CAR.BATTERY
-FOR EACH ROW
-BEGIN
-    IF UPDATING('BATTERY_ID') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET SWAPPED_OUT_BATTERY_ID = :NEW.BATTERY_ID
-        WHERE SWAPPED_OUT_BATTERY_ID = :OLD.BATTERY_ID;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_battery_out
+after update of battery_id on c##car.battery
+for each row
+begin
+    if updating('battery_id') then
+        update c##car.switch_log
+        set battery_id_off = :new.battery_id
+        where battery_id_off = :old.battery_id;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_switch_requests_lon
-AFTER UPDATE OF LONGTITUDE ON C##CAR.SWITCH_REQUESTS
-FOR EACH ROW
-BEGIN
-    IF UPDATING('LONGTITUDE') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET LONGTITUDE = :NEW.LONGTITUDE
-        WHERE LONGTITUDE = :OLD.LONGTITUDE;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_switch_request_lon
+after update of longtitude on c##car.switch_request
+for each row
+begin
+    if updating('longtitude') then
+        update c##car.switch_log
+        set longtitude = :new.longtitude
+        where longtitude = :old.longtitude;
+    end if;
+end;
 /
-CREATE TRIGGER C##CAR.trg_switch_log_switch_requests_lat
-AFTER UPDATE OF LATITUDE ON C##CAR.SWITCH_REQUESTS
-FOR EACH ROW
-BEGIN
-    IF UPDATING('LATITUDE') THEN
-        UPDATE C##CAR.SWITCH_LOG
-        SET LATITUDE = :NEW.LATITUDE
-        WHERE LATITUDE = :OLD.LATITUDE;
-    END IF;
-END;
+create trigger c##car.trg_switch_log_switch_request_lat
+after update of latitude on c##car.switch_request
+for each row
+begin
+    if updating('latitude') then
+        update c##car.switch_log
+        set latitude = :new.latitude
+        where latitude = :old.latitude;
+    end if;
+end;
 /

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class BatteryModel
+public partial class BatteryType
 {
-    public string BatteryModelId { get; set; } = null!;
+    public string BatteryTypeId { get; set; } = null!;
 
-    public decimal BatteryLife { get; set; }
+    public decimal MaxChargeTiems { get; set; }
 
     public string TotalCapacity { get; set; } = null!;
 
