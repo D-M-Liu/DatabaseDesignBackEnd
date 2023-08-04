@@ -288,6 +288,9 @@ namespace webapi
             {
                 message = ex.Message.ToString(); ;
             }
+            if(dt != null)
+                foreach (DataColumn column in dt.Columns)
+                    column.ColumnName = column.ColumnName.ToLower();
             return dt;
         }
         public static DataTable SelectSql(string sql)

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class Owner
+public partial class VehicleOwner
 {
     public string OwnerId { get; set; } = null!;
 
     public string Username { get; set; } = null!;
 
-    public string PasswordP { get; set; } = null!;
+    public string Nickname { get; set; } = null!;
 
-    public byte[]? Avatar { get; set; }
+    public string Password { get; set; } = null!;
 
-    public DateTime CreationTime { get; set; }
+    public byte[]? ProfilePhoto { get; set; }
+
+    public DateTime CreateTime { get; set; }
 
     public string? PhoneNumber { get; set; }
 

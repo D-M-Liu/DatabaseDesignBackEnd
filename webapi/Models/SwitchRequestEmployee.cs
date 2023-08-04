@@ -3,13 +3,11 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class AcceptanceOfSwitchRequest
+public partial class SwitchRequestEmployee
 {
     public string SwitchRequestId { get; set; } = null!;
 
     public string EmployeeId { get; set; } = null!;
 
-    public virtual Staff Employee { get; set; } = null!;
-
-    public virtual SwitchRequest? SwitchRequest { get; set; }
+    public virtual Employee Employee { get; set; } = null!;
 }

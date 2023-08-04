@@ -19,11 +19,9 @@ public partial class Vehicle
 
     public virtual ICollection<MaintenanceItem> MaintenanceItems { get; set; } = new List<MaintenanceItem>();
 
-    public virtual Owner Owner { get; set; } = null!;
+    public virtual VehicleOwner Owner { get; set; } = null!;
 
-    public virtual ICollection<SwitchRecord> SwitchRecords { get; set; } = new List<SwitchRecord>();
+    public virtual ICollection<SwitchLog> SwitchLogs { get; set; } = new List<SwitchLog>();
 
-    public virtual ICollection<SwitchRequest> SwitchRequests { get; set; } = new List<SwitchRequest>();
-
-    public virtual VehicleParameter VehicleModelNavigation { get; set; } = null!;
+    public virtual VehicleParam VehicleModelNavigation { get; set; } = null!;
 }

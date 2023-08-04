@@ -21,7 +21,7 @@ public partial class MaintenanceItem
 
     public string? Evaluations { get; set; }
 
-    public virtual CompletionOfMaintenance? CompletionOfMaintenance { get; set; }
+    public virtual MaintenanceItemEmployee? MaintenanceItemEmployee { get; set; }
 
     public virtual Vehicle Vehicle { get; set; } = null!;
 }

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class BatterySwitchStation
+public partial class EmployeeSwitchStation
 {
-    public string BatteryId { get; set; } = null!;
+    public string EmployeeId { get; set; } = null!;
 
     public string StationId { get; set; } = null!;
 
-    public virtual Battery Battery { get; set; } = null!;
+    public virtual Employee Employee { get; set; } = null!;
 
     public virtual SwitchStation Station { get; set; } = null!;
 }

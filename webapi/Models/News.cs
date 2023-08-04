@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class Announcement
+public partial class News
 {
     public string AnnouncementId { get; set; } = null!;
 

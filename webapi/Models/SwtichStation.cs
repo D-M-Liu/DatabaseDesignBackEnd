@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace webapi.Models;
 
-public partial class SwitchStation
+public partial class SwtichStation
 {
-    public string StationId { get; set; } = null!;
+    public string SwtichStationId { get; set; } = null!;
 
     public string? StationName { get; set; }
 
@@ -25,7 +25,7 @@ public partial class SwitchStation
 
     public decimal? AvailableBatteryCount { get; set; }
 
-    public virtual ICollection<BatterySwitchStation> BatterySwitchStations { get; set; } = new List<BatterySwitchStation>();
+    public virtual ICollection<BatterySwtichStation> BatterySwtichStations { get; set; } = new List<BatterySwtichStation>();
 
-    public virtual ICollection<EmployeeSwitchStation> EmployeeSwitchStations { get; set; } = new List<EmployeeSwitchStation>();
+    public virtual ICollection<EmployeeSwtichStation> EmployeeSwtichStations { get; set; } = new List<EmployeeSwtichStation>();
 }
