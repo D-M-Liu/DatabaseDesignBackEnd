@@ -6,7 +6,7 @@ create table c##car.switch_station (
     electricity_fee number default 0 not null,
     longtitude number default 90.00 not null unique,
     latitude number default 90.00 not null unique,
-    faliure_status char(1) default 'n' check (faliure_status in ('y', 'n')),
+    faliure_status char(3) default '·ñ' check (faliure_status in ('ÊÇ', '·ñ')),
     battery_capacity int default 0 not null,
     available_battery_count int default 0
 );
@@ -19,7 +19,7 @@ create table c##car.battery_type (
 
 create table c##car.battery (
     battery_id varchar2(50) default 'bt_tl1_num0.0.0' primary key,
-    available_status char(1) default 'y' check (available_status in ('y', 'n')),
+    available_status char(3) default 'ÊÇ' check (available_status in ('ÊÇ', '·ñ')),
     current_capacity varchar2(4) default '0' not null,
     curr_charge_times int default 0 not null,
     manufacturing_date timestamp default systimestamp not null,
@@ -38,14 +38,14 @@ create table c##car.vehicle_param (
 
 create table c##car.vehicle_owner (
     owner_id varchar2(50) default 'no. 0' primary key,
-    username varchar2(50) default 'ï¿½ï¿½ï¿½ï¿½' not null,
+    username varchar2(50) default 'ÀîËÄ' not null,
     nickname varchar2(50) default 'user_0.00' not null,
     password varchar2(50) default '123456' not null,
     profile_photo blob,
     create_time timestamp default systimestamp not null,
     phone_number varchar2(50) default '+86',
     email varchar2(50) default 'wl@car.com' not null,
-    gender char(1) default 'm' check (gender in ('f', 'm')),
+    gender char(3) default 'ÄÐ' check (gender in ('ÄÐ', 'Å®')),
     birthday timestamp,
     address varchar2(255)
 );
@@ -58,8 +58,8 @@ create table c##car.employee (
     create_time timestamp default systimestamp not null,
     phone_number varchar2(50) default '+86',
     identity_number varchar2(50) default '1xxxxxxxxxxxxxxxxx' not null,
-    name varchar2(50) default 'ï¿½ï¿½ï¿½ï¿½' not null,
-    gender char(1) default 'm' check (gender in ('f', 'm')),
+    name varchar2(50) default 'ÕÅÈý' not null,
+    gender char(3) default 'ÄÐ' check (gender in ('ÄÐ', 'Å®')),
     positions varchar2(50) default '_',
     salary number
 );
@@ -112,7 +112,7 @@ create table c##car.maintenance_item (
     remarks varchar2(255),
     service_time timestamp default systimestamp not null,
     order_submission_time timestamp,
-    order_status char(1) default '0',
+    order_status char(3) default '·ñ' check (order_status in ('ÊÇ', '·ñ')),
     evaluations varchar2(255),
     constraint fk_maintenance_item_vehicle foreign key (vehicle_id)
         references c##car.vehicle (vehicle_id) on delete cascade 
@@ -144,7 +144,7 @@ create table c##car.switch_request_employee (
 create table c##car.switch_request (
     switch_request_id varchar2(50) default 'sr_0x_1207xw1' primary key,
     vehicle_id varchar2(50) default 'vc. lc.0' not null,
-    switch_type char(1) default 'l' check (switch_type in ('d', 'l')),
+    switch_type char(6) default 'µ½µê' check (switch_type in ('ÉÏÃÅ', 'µ½µê')),
     request_time timestamp default systimestamp not null,
     longtitude number default 90.00 not null unique,
     latitude number default 90.00 not null unique,

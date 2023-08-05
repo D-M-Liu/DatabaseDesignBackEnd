@@ -121,7 +121,7 @@ namespace webapi.Controllers.Administrator
                 CreateTime = System.DateTime.Now,
                 PhoneNumber = $"{employee.phone_number}",
                 IdentityNumber = "xxxxxxxxxxxxxxxxxx",
-                Gender = employee.gender=="男"?"m":"f",
+                Gender = employee.gender== $"params.gender",
                 Positions = "fresh",
                 Name = "lihua",
                 Salary = Convert.ToDecimal(employee.salary)
