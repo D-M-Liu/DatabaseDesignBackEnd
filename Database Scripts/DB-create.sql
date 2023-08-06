@@ -6,7 +6,7 @@ create table c##car.switch_station (
     electricity_fee number default 0 not null,
     longtitude number default 90.00 not null unique,
     latitude number default 90.00 not null unique,
-    faliure_status char(3) default '·ñ' check (faliure_status in ('ÊÇ', '·ñ')),
+    faliure_status char(3) default 'å¦' check (faliure_status in ('æ˜¯', 'å¦')),
     battery_capacity int default 0 not null,
     available_battery_count int default 0
 );
@@ -19,7 +19,7 @@ create table c##car.battery_type (
 
 create table c##car.battery (
     battery_id varchar2(50) default 'bt_tl1_num0.0.0' primary key,
-    available_status char(3) default 'ÊÇ' check (available_status in ('ÊÇ', '·ñ')),
+    available_status char(3) default 'æ˜¯' check (available_status in ('æ˜¯', 'å¦')),
     current_capacity varchar2(4) default '0' not null,
     curr_charge_times int default 0 not null,
     manufacturing_date timestamp default systimestamp not null,
@@ -37,29 +37,29 @@ create table c##car.vehicle_param (
 );
 
 create table c##car.vehicle_owner (
-    owner_id varchar2(50) default 'no. 0' primary key,
-    username varchar2(50) default 'ÀîËÄ' not null,
+    owner_id varchar2(50) default '000000000' primary key,
+    username varchar2(50) default 'æå››' not null,
     nickname varchar2(50) default 'user_0.00' not null,
     password varchar2(50) default '123456' not null,
     profile_photo blob,
     create_time timestamp default systimestamp not null,
     phone_number varchar2(50) default '+86',
     email varchar2(50) default 'wl@car.com' not null,
-    gender char(3) default 'ÄĞ' check (gender in ('ÄĞ', 'Å®')),
+    gender char(3) default 'ç”·' check (gender in ('ç”·', 'å¥³')),
     birthday timestamp,
     address varchar2(255)
 );
 
 create table c##car.employee (
-    employee_id varchar2(50) default 'no. 0' primary key,
+    employee_id varchar2(50) default '10000000' primary key,
     username varchar2(50) default 'ep_0.00' not null,
     password varchar2(50) default '123456' not null,
     profile_photo blob,
     create_time timestamp default systimestamp not null,
     phone_number varchar2(50) default '+86',
     identity_number varchar2(50) default '1xxxxxxxxxxxxxxxxx' not null,
-    name varchar2(50) default 'ÕÅÈı' not null,
-    gender char(3) default 'ÄĞ' check (gender in ('ÄĞ', 'Å®')),
+    name varchar2(50) default 'å¼ ä¸‰' not null,
+    gender char(3) default 'ç”·' check (gender in ('ç”·', 'å¥³')),
     positions varchar2(50) default '_',
     salary number
 );
@@ -112,7 +112,7 @@ create table c##car.maintenance_item (
     remarks varchar2(255),
     service_time timestamp default systimestamp not null,
     order_submission_time timestamp,
-    order_status char(3) default '·ñ' check (order_status in ('ÊÇ', '·ñ')),
+    order_status char(3) default 'å¦' check (order_status in ('æ˜¯', 'å¦')),
     evaluations varchar2(255),
     constraint fk_maintenance_item_vehicle foreign key (vehicle_id)
         references c##car.vehicle (vehicle_id) on delete cascade 
@@ -144,7 +144,7 @@ create table c##car.switch_request_employee (
 create table c##car.switch_request (
     switch_request_id varchar2(50) default 'sr_0x_1207xw1' primary key,
     vehicle_id varchar2(50) default 'vc. lc.0' not null,
-    switch_type char(6) default 'µ½µê' check (switch_type in ('ÉÏÃÅ', 'µ½µê')),
+    switch_type char(6) default 'åˆ°åº—' check (switch_type in ('ä¸Šé—¨', 'åˆ°åº—')),
     request_time timestamp default systimestamp not null,
     longtitude number default 90.00 not null unique,
     latitude number default 90.00 not null unique,
@@ -178,6 +178,10 @@ create table c##car.switch_log (
         references c##car.switch_request (longtitude) on delete cascade ,
     constraint fk_switch_log_switch_request_lat foreign key (latitude)
         references c##car.switch_request (latitude) on delete cascade
+);
+create table c##car.administrator (
+    admin_id varchar2(50) default '2000000' primary key,
+    password varchar2(50) default '123456' not null,
 );
 create trigger c##car.trg_cascade_update_battery
 after update of battery_type_id on c##car.battery_type
