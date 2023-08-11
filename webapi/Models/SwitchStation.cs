@@ -7,23 +7,23 @@ public partial class SwitchStation
 {
     public string StationId { get; set; } = null!;
 
-    public string? StationName { get; set; }
+    public string? StationName { get; set; } = "";
 
-    public decimal QueueLength { get; set; }
+    public decimal QueueLength { get; set; } = 0;
 
-    public decimal ServiceFee { get; set; }
+    public decimal ServiceFee { get; set; } = 0;
 
-    public decimal ElectricityFee { get; set; }
+    public decimal ElectricityFee { get; set; } = 0;
 
-    public decimal Longtitude { get; set; }
+    public decimal Longtitude { get; set; } = 0;
 
-    public decimal Latitude { get; set; }
+    public decimal Latitude { get; set; } = 0;
 
-    public string? FaliureStatus { get; set; }
+    public string? FaliureStatus { get; set; } = "OK";
 
-    public decimal BatteryCapacity { get; set; }
+    public decimal BatteryCapacity { get; set; }=0;
 
-    public decimal? AvailableBatteryCount { get; set; }
+    public decimal? AvailableBatteryCount { get; set; } = 0;
 
     public virtual ICollection<BatterySwitchStation> BatterySwitchStations { get; set; } = new List<BatterySwitchStation>();
 
