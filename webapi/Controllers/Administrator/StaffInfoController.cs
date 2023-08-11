@@ -30,36 +30,30 @@ namespace webapi.Controllers.Administrator
             int limit = pageSize;
             if (offset < 0 || limit <= 0)
                 return BadRequest();
-            string pattern1 = "'%" + (employee_id  == String.Empty ? "" : employee_id) + "%'";
-            string pattern2 = "'%" + (username == String.Empty ? "" : username) + "%'";
-            string pattern3 = "'%" + (gender == String.Empty ? "" : gender) + "%'";
-            string pattern4 = "'%" + (phone_number == String.Empty ? "" : phone_number) + "%'";
-            string pattern5 = "'%" + (salary == String.Empty ? "" : salary.ToString()) + "%'";
-            string pattern6 = "'%" + (station_id == String.Empty ? "" : station_id) + "%'";
-            string where_cause = "WHERE " + "employee_id like " + pattern1 +
-                " AND " + "username like " + pattern2 +
-                " AND " + "gender like " + pattern3 +
-                " AND " + "phone_number like " + pattern4 +
-                " AND " + "salary like " + pattern5 +
-                " AND " + "STATION_ID like " + pattern6 + " ";
-            string sql_info = "SELECT employee_id,username,phone_number,gender,STATION_ID,STATION_NAME,salary " +
-                "FROM EMPLOYEE " +
-                "NATURAL JOIN EMPLOYEE_SWITCH_STATION " +
-                "NATURAL JOIN SWITCH_STATION " + where_cause +
-                "ORDER BY employee_id " +
-                "OFFSET " + offset.ToString() + " ROWS " +
-                "FETCH NEXT " + limit.ToString() + " ROWS ONLY";
+            string pattern1 = "'%" + (employee_id  == "null" ? "" : employee_id) + "%'";
+            string pattern2 = "'%" + (username == "null" ? "" : username) + "%'";
+            string pattern3 = "'%" + (gender == "null" ? "" : gender) + "%'";
+            string pattern4 = "'%" + (phone_number == "null" ? "" : phone_number) + "%'";
+            string pattern5 = "'%" + (salary == "null" ? "" : salary.ToString()) + "%'";
+            string pattern6 = "'%" + (station_id == "null" ? "" : station_id) + "%'";
+            string where_cause = "WHERE " + "T0.employee_id like " + pattern1 +
+                " AND " + "T0.username like " + pattern2 +
+                " AND " + "T0.gender like " + pattern3 +
+                " AND " + "T0.phone_number like " + pattern4 +
+                " AND (" + "T0.salary like " + pattern5 + " OR T0.salary IS NULL) " +
+                " AND (" + "T1.station_id like " + pattern6 + " OR T1.station_id IS NULL) ";
+            string sql_info = "SELECT T0.employee_id,T0.username,T0.phone_number,T0.gender,T0.salary,T1.station_id,T2.station_name " +
+                "FROM EMPLOYEE T0 " +
+                "LEFT JOIN EMPLOYEE_SWITCH_STATION T1 " +
+                "ON T0.employee_id=T1.employee_id " +
+                "LEFT JOIN SWITCH_STATION T2 " +
+                "on T1.station_id=T2.station_id " + where_cause +
+                "ORDER BY T0.employee_id";
             DataTable df = OracleHelper.SelectSql(sql_info);
-            string sql_total = "SELECT COUNT(*) " +
-                "FROM EMPLOYEE " +
-                "NATURAL JOIN EMPLOYEE_SWITCH_STATION " +
-                "NATURAL JOIN SWITCH_STATION " + where_cause;
-            DataTable df_count = OracleHelper.SelectSql(sql_total);
-            int totalNum = df_count != null ? Convert.ToInt32(df_count.Rows[0][0]) : 0;
             var obj = new
             {
-                totalData = totalNum,
-                data = df,
+                totalData = df != null ? df.Rows.Count : 0,
+                data = df?.AsEnumerable().Skip(offset).Take(limit).CopyToDataTable<DataRow>(),
             };
             return Content(JsonConvert.SerializeObject(obj), "application/json");
         }
@@ -108,10 +102,10 @@ namespace webapi.Controllers.Administrator
                 return Problem("Entity set 'ModelContext.Employee' is null.");
             }
             dynamic employee = JsonConvert.DeserializeObject(Convert.ToString(_employee));
-            string sql = "SELECT count(*) FROM EMPLOYEE";
+            string sql = "SELECT MAX(employee_id) FROM EMPLOYEE";
             DataTable df = OracleHelper.SelectSql(sql);
-            int df_count = df != null ? Convert.ToInt32(df.Rows[0][0]) : 0;
-            string uid = "uid" + df_count.ToString("D10");
+            int df_count = Convert.IsDBNull(df.Rows[0][0]) ? 1000000: Convert.ToInt32(df.Rows[0][0]) + 1;
+            string uid = df_count.ToString("D7");
 
             Employee new_employee = new Employee()
             {
@@ -121,9 +115,9 @@ namespace webapi.Controllers.Administrator
                 CreateTime = System.DateTime.Now,
                 PhoneNumber = $"{employee.phone_number}",
                 IdentityNumber = "xxxxxxxxxxxxxxxxxx",
-                Gender = employee.gender== $"params.gender",
-                Positions = "fresh",
-                Name = "lihua",
+                Gender = $"{employee.gender}",
+                Positions = "新人",
+                Name = "佚名",
                 Salary = Convert.ToDecimal(employee.salary)
             };
 
