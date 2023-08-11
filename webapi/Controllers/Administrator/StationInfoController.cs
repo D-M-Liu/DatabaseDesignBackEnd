@@ -23,7 +23,7 @@ namespace webapi.Controllers.Administrator
             _context = context;
         }
 
-        [HttpGet]
+        [HttpGet("query")]
         public ActionResult<IEnumerable<Employee>> GetPage_(int pageIndex, int pageSize, string station_name = "", string station_id = "", string employee_id = "",string faliure_status="")
         {
             int offset = (pageIndex - 1) * pageSize;
