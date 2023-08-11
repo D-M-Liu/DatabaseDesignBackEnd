@@ -12,18 +12,18 @@ using webapi.Models;
 
 namespace webapi.Controllers.Administrator
 {
-    [Route("administrator/station")]
+    [Route("administrator/stationInfo")]
     [ApiController]
-    public class StationController : ControllerBase
+    public class StationInfoController : ControllerBase
     {
         private readonly ModelContext _context;
 
-        public StationController(ModelContext context)
+        public StationInfoController(ModelContext context)
         {
             _context = context;
         }
 
-        [HttpGet("query")]
+        [HttpGet]
         public ActionResult<IEnumerable<Employee>> GetPage_(int pageIndex, int pageSize, string station_name = "", string station_id = "", string employee_id = "",string faliure_status="")
         {
             int offset = (pageIndex - 1) * pageSize;
