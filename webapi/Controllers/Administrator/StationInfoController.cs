@@ -14,11 +14,11 @@ namespace webapi.Controllers.Administrator
 {
     [Route("administrator/stationInfo")]
     [ApiController]
-    public class StationController : ControllerBase
+    public class StationInfoController : ControllerBase
     {
         private readonly ModelContext _context;
 
-        public StationController(ModelContext context)
+        public StationInfoController(ModelContext context)
         {
             _context = context;
         }
