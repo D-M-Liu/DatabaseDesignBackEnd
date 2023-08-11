@@ -25,10 +25,10 @@ namespace webapi.Controllers.Administrator
         }
 
         [HttpGet("query")]
-        public ActionResult<IEnumerable<Employee>> GetPage(int pageIndex, int pageSize, string switch_log_id = "", string employee_id = "", string vehicle_id = "")
+        public ActionResult<IEnumerable<Employee>> GetPage(int page_index, int page_size, string switch_log_id = "", string employee_id = "", string vehicle_id = "")
         {
-            int offset = (pageIndex - 1) * pageSize;
-            int limit = pageSize;
+            int offset = (page_index - 1) * page_size;
+            int limit = page_size;
             if (offset < 0 || limit <= 0)
                 return BadRequest();
 
