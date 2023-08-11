@@ -12,7 +12,7 @@ using webapi.Models;
 
 namespace webapi.Controllers.Administrator
 {
-    [Route("administrator/station")]
+    [Route("administrator/stationInfo")]
     [ApiController]
     public class StationController : ControllerBase
     {

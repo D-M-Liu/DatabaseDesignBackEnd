@@ -55,7 +55,7 @@ namespace webapi.Controllers
             {
                 obj.code = 1;
                 obj.msg = "用户id不存在";
-                obj.user_info = new { };
+                obj.data = new { };
             }
             else
             {
@@ -67,19 +67,19 @@ namespace webapi.Controllers
                 {
                     obj.code = 2;
                     obj.msg = "密码错误";
-                    obj.user_info = new { };
+                    obj.data = new { };
                 }
                 else
                 {
                     obj.msg = "登陆成功";
-                    obj.user_info = right;
+                    obj.data = right;
                 }
             }
             return Content(JsonConvert.SerializeObject(obj), "application/json");
         }
 
-        [HttpPost("signin")]
-        public ActionResult SigninCheck([FromBody] dynamic _user)
+        [HttpPost("sign-up")]
+        public ActionResult SignupCheck([FromBody] dynamic _user)
         {
             dynamic user = JsonConvert.DeserializeObject(Convert.ToString(_user));
             string user_type = $"{user.user_type}";
@@ -94,7 +94,10 @@ namespace webapi.Controllers
             string phone_number = $"{user.phone_number}";
             //定义返回对象
             dynamic obj = new ExpandoObject();
-            obj.user_id = "-1";
+            obj.data = new
+            {
+                user_id = "-1"
+            };
             obj.msg = "注册成功";
             if (user_type == "0") //注册车主
             {
@@ -103,7 +106,10 @@ namespace webapi.Controllers
                 DataTable df = OracleHelper.SelectSql(sql);
                 int df_count = Convert.IsDBNull(df.Rows[0][0]) ? 0000000 : Convert.ToInt32(df.Rows[0][0]) + 1;
                 string uid = df_count.ToString("D7");
-                obj.user_id = uid;
+                obj.data = new
+                {
+                    user_id = uid
+                };
                 //定义新tuple
                 VehicleOwner owner = new VehicleOwner
                 {
@@ -137,11 +143,23 @@ namespace webapi.Controllers
             }
             else if(user_type == "1") //注册员工
             {
+                string invite_code = $"{user.invite_code}";
+                if (invite_code != "123456")
+                {
+                    obj.data = new
+                    {
+                        user_id = "-1"
+                    };
+                    return Content(JsonConvert.SerializeObject(obj), "application/json");
+                }
                 string sql = "SELECT MAX(employee_id) FROM EMPLOYEE";
                 DataTable df = OracleHelper.SelectSql(sql);
                 int df_count = Convert.IsDBNull(df.Rows[0][0]) ? 1000000 : Convert.ToInt32(df.Rows[0][0]) + 1;
                 string uid = df_count.ToString("D7");
-                obj.user_id = uid;
+                obj.data = new
+                {
+                    user_id = uid
+                };
                 Employee employee = new Employee
                 {
                     EmployeeId = uid,
@@ -152,7 +170,8 @@ namespace webapi.Controllers
                     PhoneNumber = phone_number,
                     Gender = $"{user.gender}",
                     IdentityNumber = $"{user.identity_number}",
-                    Positions = $"{user.position}"
+                    Positions = $"{user.position}",
+                    Salary = 0
                 };
                 _context.Employees.Add(employee);
                 try
