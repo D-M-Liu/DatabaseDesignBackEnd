@@ -25,15 +25,24 @@ namespace webapi.Controllers.Administrator
         }
 
         [HttpGet("query")]
-        public ActionResult<IEnumerable<Employee>> GetPage(int page_index, int page_size, string switch_log_id = "", string employee_id = "", string vehicle_id = "")
+        public ActionResult<IEnumerable<Employee>> GetPage_(int page_index, int page_size, string switch_service_id = "", string employee_id = "", string vehicle_id = "")
         {
             int offset = (page_index - 1) * page_size;
             int limit = page_size;
-            if (offset < 0 || limit <= 0)
-                return BadRequest();
+            if (offset < 0 || limit <= 0)   
+            {
+                var t = new
+                {
+                    code = 1,
+                    msg = "页码或页大小非正",
+                    totalData = 0,
+                    data = "",
+                };
+                return Content(JsonConvert.SerializeObject(t), "application/json");
+            }
 
             // 搞不懂 参数化查询查不到东西，普通查询可以
-            /*OracleParameter paramSwitchServiceId = new OracleParameter(":pSwitchServiceId", OracleDbType.NVarchar2) { Value = $"%{switch_log_id}%" };
+            /*OracleParameter paramSwitchServiceId = new OracleParameter(":pSwitchServiceId", OracleDbType.NVarchar2) { Value = $"%{switch_service_id}%" };
             OracleParameter paramEmployeeId = new OracleParameter(":pEmployeeId", OracleDbType.NVarchar2, 7, ParameterDirection.InputOutput) { Value = $"'%{(employee_id == String.Empty ? "" : employee_id)}%'" };
             OracleParameter paramVehicleId = new OracleParameter(":pVehicleId", OracleDbType.NVarchar2) { Value = $"%{vehicle_id}%" };
             OracleParameter paramOffset = new OracleParameter(":pOffset", OracleDbType.Int32) { Value = offset };
@@ -51,8 +60,8 @@ namespace webapi.Controllers.Administrator
                                   "WHERE switch_service_id LIKE :pSwitchServiceId " +
                                   "AND employee_id LIKE :pEmployeeId " +
                                   "AND vehicle_id LIKE :pVehicleId";*/
-            
-            string pattern1 = "'%" + (switch_log_id  == String.Empty ? "" : switch_log_id) + "%'";
+
+            string pattern1 = "'%" + (switch_service_id  == String.Empty ? "" : switch_service_id) + "%'";
             string pattern2 = "'%" + (employee_id == String.Empty ? "" : employee_id) + "%'";
             string pattern3 = "'%" + (vehicle_id == String.Empty ? "" : vehicle_id) + "%'";
             string where_cause = "WHERE " + "switch_service_id like " + pattern1 +
@@ -78,14 +87,14 @@ namespace webapi.Controllers.Administrator
         }
 
         [HttpDelete]
-        public IActionResult DeleteLog(string switch_log_id)
+        public IActionResult DeleteLog(string switch_service_id)
         {
             if (_context.SwitchLogs == null)
             {
                 return NotFound();
             }
 
-            var ServiceLog = _context.SwitchLogs.Find(switch_log_id);
+            var ServiceLog = _context.SwitchLogs.Find(switch_service_id);
             if (ServiceLog == null)
             {
                 return NotFound();
