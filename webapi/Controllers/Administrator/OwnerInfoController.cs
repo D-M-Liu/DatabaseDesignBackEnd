@@ -147,14 +147,17 @@ namespace webapi.Controllers.Administrator
             dynamic owner = JsonConvert.DeserializeObject(Convert.ToString(_owner));
             string sql = "SELECT MAX(owner_id) FROM EMPLOYEE";
             DataTable df = OracleHelper.SelectSql(sql);
-            int df_count = df != null ? Convert.ToInt32(df.Rows[0][0]) : 0;
-            string uid = "uid" + df_count.ToString("D15");
+            string sql_total = "SELECT COUNT(*) " +
+                "FROM vehicle_owner ";
+            DataTable df_count = OracleHelper.SelectSql(sql_total);
+            int totalNum = df_count != null ? Convert.ToInt32(df_count.Rows[0][0]) : 0;
+            string uid = "uid" + totalNum.ToString("D9");
 
             VehicleOwner new_owner = new VehicleOwner()
             {
                 OwnerId = uid,
                 Username = $"{owner.username}",
-                Nickname = "user_0.00" + df_count.ToString("D8"),
+                Nickname = "user_0.00" + totalNum.ToString("D8"),
                 Password = "123456",
                 ProfilePhoto = null,
                 CreateTime = System.DateTime.Now,
@@ -184,6 +187,7 @@ namespace webapi.Controllers.Administrator
             var returnMessage = new
             {
                 code = 0,
+                owner_id = new_owner.OwnerId,
                 msg = "success"
             };
             return Content(JsonConvert.SerializeObject(returnMessage), "application/json");
