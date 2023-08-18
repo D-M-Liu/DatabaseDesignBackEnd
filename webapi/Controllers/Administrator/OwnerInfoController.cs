@@ -26,7 +26,6 @@ namespace webapi.Controllers.Administrator
         {
             _context = context;
         }
-
         [HttpGet("message")]
         public ActionResult<IEnumerable<VehicleOwner>> GetPage(int pageIndex, int pageSize)
         {
@@ -34,79 +33,79 @@ namespace webapi.Controllers.Administrator
             int limit = pageSize;
             if (offset < 0 || limit <= 0)
             {
-                var t = new
+                var errorResponse = new
                 {
                     code = 1,
                     msg = "页码或页大小非正",
                     totalData = 0,
                     data = "",
                 };
-                return Content(JsonConvert.SerializeObject(t), "application/json");
+                return Content(JsonConvert.SerializeObject(errorResponse), "application/json");
             }
-            string sql_info = "SELECT owner_id, username, gender, phone_number, address, password " +
-                "FROM vehicle_owner " +
-                "ORDER BY owner_id " +
-                "OFFSET " + offset.ToString() + " ROWS " +
-                "FETCH NEXT " + limit.ToString() + " ROWS ONLY";
-            DataTable df = OracleHelper.SelectSql(sql_info);
-            string sql_total = "SELECT COUNT(*) " +
-                "FROM vehicle_owner ";
-            DataTable df_count = OracleHelper.SelectSql(sql_total);
-            int totalNum = df_count != null ? Convert.ToInt32(df_count.Rows[0][0]) : 0;
-            var obj = new
+            var query = _context.VehicleOwners
+                    .OrderBy(vo => vo.OwnerId)
+                    .Skip(offset)
+                    .Take(limit)
+                    .ToList();
+
+            var totalNum = _context.VehicleOwners.Count();
+            var responseObj = new
             {
                 code = 0,
                 msg = "success",
                 totalData = totalNum,
-                data = df,
+                data = query,
             };
-            return Content(JsonConvert.SerializeObject(obj), "application/json");
-        }
+            return Content(JsonConvert.SerializeObject(responseObj), "application/json");
 
+        }
         [HttpGet("query")]
         public ActionResult<IEnumerable<VehicleOwner>> GetPage_(int pageIndex, int pageSize, string owner_id = "", string username = "", string gender = "", string phone_number = "", string address = "", string password = "")
         {
             int offset = (pageIndex - 1) * pageSize;
             int limit = pageSize;
+
             if (offset < 0 || limit <= 0)
             {
-                var t = new
+                var errorResponse = new
                 {
                     code = 1,
                     msg = "页码或页大小非正",
                     totalData = 0,
                     data = "",
                 };
-                return Content(JsonConvert.SerializeObject(t), "application/json");
+                return Content(JsonConvert.SerializeObject(errorResponse), "application/json");
             }
-            string pattern1 = "'%" + (owner_id == String.Empty ? "" : owner_id) + "%'";
-            string pattern2 = "'%" + (username == String.Empty ? "" : username) + "%'";
-            string pattern3 = "'%" + (gender == String.Empty ? "" : gender) + "%'";
-            string pattern4 = "'%" + (phone_number == String.Empty ? "" : phone_number) + "%'";
-            string pattern5 = "'%" + (address == String.Empty ? "" : address) + "%'";
-            string pattern6 = "'%" + (password == String.Empty ? "" : password) + "%'";
-            string where_cause = "WHERE " + "owner_id like " + pattern1 +
-                " AND " + "username like " + pattern2 +
-                " AND " + "gender like " + pattern3 +
-                " AND " + "phone_number like " + pattern4 +
-                " AND " + "address like " + pattern5 +
-                " AND " + "password like " + pattern6 + " ";
-            string sql_info = "SELECT owner_id, username, gender, phone_number, address, password " +
-                "FROM vehicle_owner " + where_cause +
-                "ORDER BY owner_id " +
-                "OFFSET " + offset.ToString() + " ROWS " +
-                "FETCH NEXT " + limit.ToString() + " ROWS ONLY";
-            DataTable df = OracleHelper.SelectSql(sql_info);
-            string sql_total = "SELECT COUNT(*) " +
-                "FROM vehicle_owner " + where_cause;
-            DataTable df_count = OracleHelper.SelectSql(sql_total);
-            int totalNum = df_count != null ? Convert.ToInt32(df_count.Rows[0][0]) : 0;
-            var obj = new
+
+            var pattern1 = "%" + (string.IsNullOrEmpty(owner_id) ? "" : owner_id) + "%";
+            var pattern2 = "%" + (string.IsNullOrEmpty(username) ? "" : username) + "%";
+            var pattern3 = "%" + (string.IsNullOrEmpty(gender) ? "" : gender) + "%";
+            var pattern4 = "%" + (string.IsNullOrEmpty(phone_number) ? "" : phone_number) + "%";
+            var pattern5 = "%" + (string.IsNullOrEmpty(address) ? "" : address) + "%";
+            var pattern6 = "%" + (string.IsNullOrEmpty(password) ? "" : password) + "%";
+
+            var query = _context.VehicleOwners
+                .Where(vo =>
+                    EF.Functions.Like(vo.OwnerId, pattern1) &&
+                    EF.Functions.Like(vo.Username, pattern2) &&
+                    EF.Functions.Like(vo.Gender, pattern3) &&
+                    EF.Functions.Like(vo.PhoneNumber, pattern4) &&
+                    EF.Functions.Like(vo.Address, pattern5) &&
+                    EF.Functions.Like(vo.Password, pattern6))
+                .OrderBy(vo => vo.OwnerId)
+                .Skip(offset)
+                .Take(limit)
+                .ToList();
+
+            var totalNum = _context.VehicleOwners.Count();
+
+            var responseObj = new
             {
                 totalData = totalNum,
-                data = df,
+                data = query,
             };
-            return Content(JsonConvert.SerializeObject(obj), "application/json");
+
+            return Content(JsonConvert.SerializeObject(responseObj), "application/json");
         }
 
         [HttpPatch]
