@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Data;
-using webapi.Models;
+using EntityFramework.Context;
+using EntityFramework.Models;
 using Idcreator;
 
 namespace webapi.Controllers.Administrator

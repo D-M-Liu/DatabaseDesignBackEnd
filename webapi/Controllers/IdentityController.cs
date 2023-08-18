@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Data;
 using System.Dynamic;
-using webapi.Models;
+using EntityFramework.Context;
+using EntityFramework.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace webapi.Controllers

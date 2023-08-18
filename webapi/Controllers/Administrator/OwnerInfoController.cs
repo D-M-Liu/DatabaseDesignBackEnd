@@ -12,7 +12,8 @@ using System.Data;
 using System.Net;
 using System.Reflection.Metadata;
 using System.Xml.Linq;
-using webapi.Models;
+using EntityFramework.Context;
+using EntityFramework.Models;
 
 namespace webapi.Controllers.Administrator
 {

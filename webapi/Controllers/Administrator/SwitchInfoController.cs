@@ -8,7 +8,8 @@ using NuGet.ContentModel;
 using NuGet.Protocol;
 using System.Data;
 using System.Xml.Linq;
-using webapi.Models;
+using EntityFramework.Context;
+using EntityFramework.Models;
 using Oracle.ManagedDataAccess.Client;
 
 namespace webapi.Controllers.Administrator

@@ -8,7 +8,8 @@ using NuGet.ContentModel;
 using NuGet.Protocol;
 using System.Data;
 using System.Xml.Linq;
-using webapi.Models;
+using EntityFramework.Context;
+using EntityFramework.Models;
 
 namespace webapi.Controllers.Administrator
 {
