@@ -33,6 +33,7 @@ create table c##car.vehicle_param (
     transmission varchar2(50) default 'gt0.00' not null,
     service_term timestamp default systimestamp not null,
     manufacturer varchar2(50) default 'nio inc.' not null,
+    snip blob,
     max_speed number
 );
 
@@ -53,6 +54,7 @@ create table c##car.vehicle_owner (
 create table c##car.employee (
     employee_id varchar2(50) default '10000000' primary key,
     username varchar2(50) default 'ep_0.00' not null,
+    email varchar2(50) default 'xxxx@xxx.xxx' not null,
     password varchar2(50) default '123456' not null,
     profile_photo blob,
     create_time timestamp default systimestamp not null,
@@ -95,6 +97,7 @@ create table c##car.kpi (
 create table c##car.vehicle (
     vehicle_id varchar2(50) default 'vc. lc.0' primary key,
     vehicle_model varchar2(50) default 'fu_wl_lp1_num0.0.0' not null,
+    plate_number varchar2(50) default 'x0xxxxx' not null,
     owner_id varchar2(50) default 'no. 0' not null,
     purchase_date timestamp default systimestamp not null,
     battery_id varchar2(50) default null,
@@ -108,6 +111,7 @@ create table c##car.vehicle (
 create table c##car.maintenance_item (
     maintenance_item_id varchar2(50) default 'mti_ep_0x548151' primary key,
     vehicle_id varchar2(50) default 'vc. lc.0' not null,
+    title varchar2(50) default '维修工作1' not null,
     maintenance_location varchar2(50) unique,
     remarks varchar2(255),
     service_time timestamp default systimestamp not null,
@@ -181,6 +185,7 @@ create table c##car.switch_log (
 );
 create table c##car.administrator (
     admin_id varchar2(50) default '2000000' primary key,
+    email varchar2(50) default 'xxxx@xxxx.xxx' not null,
     password varchar2(50) default '123456' not null,
 );
 create trigger c##car.trg_cascade_update_battery
