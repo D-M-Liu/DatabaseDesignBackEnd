@@ -47,7 +47,13 @@ namespace webapi.Controllers.Administrator
                 return NewContent(1, e.InnerException?.Message + "");
             }
 
-            return NewContent(0, "success");
+            var obj = new
+            {
+                code = 0,
+                msg = "success",
+                maintenance_item_id = id,
+            };
+            return Content(JsonConvert.SerializeObject(obj), "application/json");
         }
         [HttpPatch]
         public IActionResult submit_evaluations([FromBody] dynamic _acm)
